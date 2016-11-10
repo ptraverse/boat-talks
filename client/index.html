@@ -1,0 +1,209 @@
+
+    
+    
+    
+<!--  </body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en" ng-app>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="authenticity_token" name="csrf-param" />
+    <title>Boat Talks - "Strava for Boating"</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
+
+    <link rel="stylesheet" href="//webapiv2.navionics.com/dist/webapi/webapi.min.css" >
+    <script type="text/javascript" src="//webapiv2.navionics.com/dist/webapi/webapi.min.no-dep.js"></script>
+
+    <style type="text/css">
+        
+            html, body {
+                height: 100%;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                display: table;
+                font-weight: 100;
+                font-family: 'Lato';
+            }
+
+            .container {
+                text-align: center;
+                display: table-cell;
+                vertical-align: middle;
+            }
+
+            .content {
+                text-align: center;
+                display: inline-block;
+            }
+
+            .title {
+                font-size: 96px;
+            }
+        
+    </style>
+    
+    <script>
+      function ChatController($scope) {
+        var socket = io.connect();
+
+        $scope.messages = [];
+        $scope.roster = [];
+        $scope.name = '';
+        $scope.text = '';
+
+        socket.on('connect', function () {
+          $scope.setName();
+        });
+
+        socket.on('message', function (msg) {
+          $scope.messages.push(msg);
+          $scope.$apply();
+        });
+
+        socket.on('roster', function (names) {
+          $scope.roster = names;
+          $scope.$apply();
+        });
+
+        $scope.send = function send() {
+          console.log('Sending message:', $scope.text);
+          socket.emit('message', $scope.text);
+          $scope.text = '';
+        };
+
+        $scope.setName = function setName() {
+          socket.emit('identify', $scope.name);
+        };
+      }
+    </script>
+</head>
+<body data-root="//webapiv2.navionics.com/dist/webapi/images" >
+    
+    <!--<div class="container" ng-controller="ChatController">-->
+      
+    <!--<div class="page-header">-->
+    <!--  <h1 class="title">Boat Talks</h1>-->
+    <!--</div>-->
+      
+    <!--<div class="span6">-->
+    <!--  <ul class="nav nav-list well">-->
+    <!--    <li class="nav-header">Users Online</li>-->
+    <!--    <li ng-repeat="user in roster" ng-bind="user">-->
+    <!--    </li>-->
+    <!--  </ul>-->
+    <!--</div>-->
+      
+    <!--<div class="row">-->
+    <!--  <div>    -->
+    <!--    <div class="span12">-->
+    <!--      <table class="table table-striped table-bordered">-->
+    <!--        <thead>-->
+    <!--          <tr>-->
+    <!--            <th class="span2">Boat Name</th>-->
+    <!--            <th class="span7">Message</th>-->
+    <!--            <th class="span7">Position</th>-->
+    <!--          </tr>-->
+    <!--        </thead>-->
+    <!--        <tbody>-->
+    <!--          <tr ng-repeat="msg in messages">-->
+    <!--            <td class="span2" ng-bind="msg.name"></td>-->
+    <!--            <td class="span7" ng-bind="msg.text"></td>-->
+    <!--            <td class="span7" ng-bind="msg.position"></td>-->
+    <!--          </tr>-->
+    <!--        </tbody>-->
+    <!--      </table>-->
+    <!--      <div class="row controls">-->
+    <!--        <form ng-submit="send()">-->
+    <!--          <div class="span2"><input type="text" class="input-block-level" ng-model="name" ng-change="setName()" placeholder="Your Name"></div>-->
+    <!--          <div class="input-append span7">-->
+    <!--            <input type="text" class="span3" ng-model="text" placeholder="Message">-->
+    <!--            <input type="text" class="span3" ng-model="text" placeholder="Position" disabled id="position">-->
+    <!--            <input type="submit" class="span1 btn btn-primary" value="Send" ng-disabled="!text">-->
+    <!--          </div>-->
+    <!--        </form>-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <!--  </div>-->
+    <!--</div>-->
+    <!--<script src="/socket.io/socket.io.js"></script>-->
+    <!--<script src="/js/jquery.min.js"></script>-->
+    <!--<script src="/js/bootstrap.min.js"></script>-->
+    <!--<script src="/js/angular.min.js"></script>-->
+
+   
+   
+    <div class="test_map_div" ></div>
+    <script>
+        var userCenter = [-120, 48];
+        var webapi = new JNC.Views.BoatingNavionicsMap({
+            zoom: 3,
+            tagId: '.test_map_div',
+            center: userCenter,
+            navKey: 'Navionics_webapi_02834'
+        });
+        
+        var options = {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        };
+
+        function success(pos) {
+          var crd = pos.coords;
+        
+          console.log('Your current position is:');
+          console.log('Latitude : ' + crd.latitude);
+          console.log('Longitude: ' + crd.longitude);
+          // console.log('More or less ' + crd.accuracy + ' meters.');
+          
+          userNewCenter = [ crd.longitude, crd.latitude ];
+          if ( Math.abs(userCenter[0]-userNewCenter[0])>0.001 || Math.abs(userCenter[1]-userNewCenter[1])>0.001 ) {
+            console.log('change detected:');
+            console.log(userCenter);
+            console.log(userNewCenter);
+            userCenter = userNewCenter;
+            console.log('success updating userCenter to ');
+            console.log(userCenter);
+            
+            console.log('flying to ');
+            console.log(userNewCenter);
+            // webapi.flyToPosition([-123.1180883,49.278302]);
+            webapi.flyToPosition(-123.1180883,49.278302, 5);
+          }
+        };
+        
+        function error(err) {
+          console.warn('ERROR(' + err.code + '): ' + err.message);
+        };
+        
+        function getLocation() {
+          if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(success, error, options);
+          } else {
+              console.log("Geolocation is not supported by this browser.");
+          }
+        }
+        
+        var interval = 3000;
+        setInterval(function() {
+          getLocation();
+        }, interval);
+        
+    </script>
+    
+    
+    
+
+</body>
+</html>
