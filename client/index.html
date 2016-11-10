@@ -152,6 +152,8 @@
             center: userCenter,
             navKey: 'Navionics_webapi_02834'
         });
+        webapi.showSonarControl(true);
+        webapi.flyToPosition([-123.1180883,49.278302], 4);
         
         var options = {
           enableHighAccuracy: true,
@@ -179,7 +181,7 @@
             console.log('flying to ');
             console.log(userNewCenter);
             // webapi.flyToPosition([-123.1180883,49.278302]);
-            webapi.flyToPosition(-123.1180883,49.278302, 5);
+            // webapi.flyToPosition(-123.1180883,49.278302, 5);
           }
         };
         
