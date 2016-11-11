@@ -145,15 +145,6 @@
    
     <div class="test_map_div" ></div>
     <script>
-        var userCenter = [-120, 48];
-        var webapi = new JNC.Views.BoatingNavionicsMap({
-            zoom: 3,
-            tagId: '.test_map_div',
-            center: userCenter,
-            navKey: 'Navionics_webapi_02834'
-        });
-        webapi.showSonarControl(true);
-        webapi.flyToPosition([-123.1180883,49.278302], 4);
         
         var options = {
           enableHighAccuracy: true,
@@ -169,20 +160,14 @@
           console.log('Longitude: ' + crd.longitude);
           // console.log('More or less ' + crd.accuracy + ' meters.');
           
-          userNewCenter = [ crd.longitude, crd.latitude ];
-          if ( Math.abs(userCenter[0]-userNewCenter[0])>0.001 || Math.abs(userCenter[1]-userNewCenter[1])>0.001 ) {
-            console.log('change detected:');
-            console.log(userCenter);
-            console.log(userNewCenter);
-            userCenter = userNewCenter;
-            console.log('success updating userCenter to ');
-            console.log(userCenter);
-            
-            console.log('flying to ');
-            console.log(userNewCenter);
-            // webapi.flyToPosition([-123.1180883,49.278302]);
-            // webapi.flyToPosition(-123.1180883,49.278302, 5);
-          }
+          userCenter = [ crd.longitude, crd.latitude ];
+          var webapi = new JNC.Views.BoatingNavionicsMap({
+              zoom: 13,
+              tagId: '.test_map_div',
+              center: userCenter,
+              navKey: 'Navionics_webapi_02834'
+          });
+          webapi.showSonarControl(false);
         };
         
         function error(err) {
@@ -197,10 +182,7 @@
           }
         }
         
-        var interval = 3000;
-        setInterval(function() {
-          getLocation();
-        }, interval);
+        getLocation();
         
     </script>
     
