@@ -162,12 +162,13 @@
           
           userCenter = [ crd.longitude, crd.latitude ];
           var webapi = new JNC.Views.BoatingNavionicsMap({
-              zoom: 13,
+              zoom: 10,
               tagId: '.test_map_div',
               center: userCenter,
               navKey: 'Navionics_webapi_02834'
           });
           webapi.showSonarControl(false);
+          
         };
         
         function error(err) {
