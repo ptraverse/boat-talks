@@ -1,0 +1,11 @@
+extends layout
+
+block main
+  div.row
+      div#map_div.leaflet-container.leaflet-touch.leaflet-retina.leaflet-fade-anim.leaflet-grab.leaflet-touch-drag.leaflet-touch-zoom
+  div.row
+    div.col-md-2.col-md-offset-5.center
+      div#testMapWidget
+    
+block additional_js
+    script(src='./js/main.js' defer)

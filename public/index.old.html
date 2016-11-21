@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" ng-app>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="authenticity_token" name="csrf-param" />
+    <title>Boat Talks - "Strava for Boating"</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
+
+    <!--Leaflet API-->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+
+    <!--Example Styles-->
+    <link rel="stylesheet" href="//webapiv2.navionics.com/styles/website-styles.css"/>
+    <script type="text/javascript" src="//webapiv2.navionics.com/examples/data/rainbow/rainbow-custom.min.js"></script>
+
+    <!-- jNavionicsChart -->
+    <link rel="stylesheet" href="//webapiv2.navionics.com/dist/webapi/webapi.min.css">
+    <script type="text/javascript" src="//webapiv2.navionics.com/dist/webapi/webapi.min.no-dep.js"></script>
+
+    <style type="text/css">
+        
+            html, body {
+                height: 100%;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                display: table;
+                font-weight: 150;
+                /*font-family: 'Lato';*/
+            }
+
+            .container {
+                text-align: center;
+                display: table-cell;
+                vertical-align: middle;
+            }
+
+            .content {
+                text-align: center;
+                display: inline-block;
+            }
+
+            .title {
+                font-size: 96px;
+            }
+            
+            #map_div {
+              height: 540px;
+            }
+        
+    </style>
+    
+    
+</head>
+<body data-root="//webapiv2.navionics.com/dist/webapi/images" >
+  
+    <div id="map_div" class="leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom">
+    </div>  
+
+   <script>
+           
+      var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      };
+      
+      function success(pos) {
+        var crd = pos.coords;
+      
+        console.log('Your current position is:');
+        console.log('Latitude : ' + crd.latitude);
+        console.log('Longitude: ' + crd.longitude);
+        // console.log('More or less ' + crd.accuracy + ' meters.');
+        
+        var userCenter = [ crd.longitude, crd.latitude ];
+        
+        var map = L.map('map_div');
+      
+        var overlay=new JNC.Leaflet.LeafletNavionicsOverlay({
+            navKey: 'Navionics_webapi_02834',
+            chartType: JNC.NAVIONICS_CHARTS.NAUTICAL,
+            isTransparent: true,
+            zIndex: 1
+        });
+      
+        map.setView(userCenter, 9);
+        overlay.addTo(map);
+        
+        };
+      
+      function error(err) {
+        console.warn('ERROR(' + err.code + '): ' + err.message);
+      };
+      
+      function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success, error, options);
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+      }
+      
+      getLocation();
+     
+   </script>
+   
+</body>
+</html>

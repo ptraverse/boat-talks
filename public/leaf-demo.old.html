@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Navionics Web API v2</title>
+
+    <!--Leaflet API-->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+
+    <!--Example Styles-->
+    <link rel="stylesheet" href="//webapiv2.navionics.com/styles/website-styles.css"/>
+    <script type="text/javascript" src="//webapiv2.navionics.com/examples/data/rainbow/rainbow-custom.min.js"></script>
+
+    <!-- jNavionicsChart -->
+    <link rel="stylesheet" href="//webapiv2.navionics.com/dist/webapi/webapi.min.css">
+    <script type="text/javascript" src="//webapiv2.navionics.com/dist/webapi/webapi.min.no-dep.js"></script>
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        .map {
+            border: 1px solid gray;
+            min-height: 500px;
+            width: 100%;
+            height: 100%;
+        }
+        table {
+            width: 100%;
+        }
+    </style>
+
+</head>
+
+<body data-root="//webapiv2.navionics.com/dist/webapi/images">
+
+<div class="content">
+    
+    <table>
+        <tr>
+            <td class="left_colum">
+                <div id="nautical-non-transparent-map-container"  class="map"></div>
+            </td>
+            <td class="right_colum">
+                <h2>Navionics Overlays over Leaflet Map Engine (none-transparent)</h2>
+                <pre><code data-language="javascript">
+var map = L.map('nautical-non-transparent-map-container');
+
+var overlay=new JNC.Leaflet.LeafletNavionicsOverlay({
+    navKey: 'navionics_key',
+    chartType: JNC.NAVIONICS_CHARTS.NAUTICAL,
+    isTransparent: false,
+    zIndex: 1
+});
+
+map.setView([49.28,-123.145], 15);
+overlay.addTo(map);
+                </code></pre>
+            </td>
+        </tr>
+
+    </table>
+    <script type="text/javascript">
+
+        var coord = [49.28,-123.145];
+        var zoom = 15;
+
+        var leafletOverlayNauticalNonTransparent = L.map('nautical-non-transparent-map-container');
+
+        leafletOverlayNauticalNonTransparent.setView(coord, zoom);
+
+        (new JNC.Leaflet.NavionicsOverlay({
+            navKey: 'Navionics_webapi_02834',
+            chartType: JNC.NAVIONICS_CHARTS.NAUTICAL,
+            isTransparent: false,
+            zIndex: 1
+        })).addTo(leafletOverlayNauticalNonTransparent);
+        
+        L.marker(coord).addTo(leafletOverlayNauticalNonTransparent);
+
+    </script>
+</div>
+</body>
+</html>
+

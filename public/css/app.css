@@ -1,0 +1,24 @@
+div {
+    
+}
+
+.center-block {
+    text-align: center;
+}
+
+#testMapWidget {
+    border: 1px solid black;
+    height:250px;
+    padding:20px;
+}
+
+#map_div {
+    border: 1px solid blue; 
+    height:80vh;
+}
+
+#mode-selector-dropdown {
+    position: absolute;
+    background-color: white;
+    z-index: 2;
+}

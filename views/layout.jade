@@ -1,0 +1,42 @@
+doctype html
+html(lang='en')
+  head
+    title= title
+
+    // Bower Packages
+    script(type='text/javascript', src='jquery/dist/jquery.js')
+    script(type='text/javascript', src='bootstrap/dist/js/bootstrap.js')
+    link(rel='stylesheet', href='bootstrap/dist/css/bootstrap.css')
+    link(rel='stylesheet', href='bootstrap/dist/css/bootstrap-theme.css')
+    link(rel='stylesheet', href='components-font-awesome/css/font-awesome.css')
+        
+    // Leaflet API
+    link(rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css")
+    script(src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js")
+
+    // Example Styles
+    link(rel="stylesheet" href="//webapiv2.navionics.com/styles/website-styles.css")
+    script(type="text/javascript" src="//webapiv2.navionics.com/examples/data/rainbow/rainbow-custom.min.js")
+
+    // jNavionicsChart
+    link(rel="stylesheet" href="//webapiv2.navionics.com/dist/webapi/webapi.min.css")
+    script(type="text/javascript" src="//webapiv2.navionics.com/dist/webapi/webapi.min.no-dep.js")
+        
+    //custom CSS
+    link(rel="stylesheet" href="css/app.css")
+        
+block content
+  body(data-root="//webapiv2.navionics.com/dist/webapi/images")
+    div.row
+      div.col-md-5.col-sm-5
+        include left-header
+      div.col-md-2.col-sm-2
+        h2.center-block Boat Talks
+      div.col-md-5.col-sm-5
+        include right-header
+    div.row
+      div.col-md-12.col-lg-12
+        block main
+    script(type='text/javascript' src='app.js')
+    block additional_js    
+      
