@@ -2,10 +2,13 @@ extends layout
 
 block main
   div.row
-      div#map_div.leaflet-container.leaflet-touch.leaflet-retina.leaflet-fade-anim.leaflet-grab.leaflet-touch-drag.leaflet-touch-zoom
+    div#map_div.navigable.leaflet-container.leaflet-touch.leaflet-retina.leaflet-fade-anim.leaflet-grab.leaflet-touch-drag.leaflet-touch-zoom
+    div#chat_div.navigable
+    div#profile_div.navigable
+    div#buy_sell_div.navigable
   div.row
-    div.col-md-2.col-md-offset-5.center
-      div#testMapWidget
+    div#chatInputWidget
     
 block additional_js
     script(src='./js/main.js' defer)
+    

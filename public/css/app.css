@@ -12,9 +12,15 @@ div {
     padding:20px;
 }
 
+
+.navigable {
+    display: none;
+}
+
 #map_div {
     border: 1px solid blue; 
     height:80vh;
+    display: block;
 }
 
 #mode-selector-dropdown {

@@ -41,7 +41,7 @@ class TestMapWidget extends React.Component {
     }
 };
 
-ReactDOM.render(
-    <TestMapWidget />,
-    document.getElementById('testMapWidget')
-);
+// ReactDOM.render(
+//     <TestMapWidget />,
+//     document.getElementById('testMapWidget')
+// );
