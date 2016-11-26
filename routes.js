@@ -19,6 +19,11 @@ router.get('/', function(req, res) {
 });
 
 
+router.get('/material-test', function(req, res) {
+  var html = jade.renderFile('views/material-test.jade');
+  res.send(html);
+});
+
 router.get('/stormpath', stormpath.getUser, function(req, res) {
   res.render('home');
 });

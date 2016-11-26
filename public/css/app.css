@@ -15,11 +15,10 @@ div {
 
 .navigable {
     display: none;
+    height:80vh;
 }
 
 #map_div {
-    border: 1px solid blue; 
-    height:80vh;
     display: block;
 }
 

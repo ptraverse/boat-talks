@@ -1,5 +1,3 @@
-var socket = io.connect();
-
 var options = {
   enableHighAccuracy: true,
   timeout: 5000,
@@ -55,13 +53,13 @@ function drawMarker(lat, lon) {
 }
 
 
-socket.on('server event', function (data) {
-  console.log(data);
-  socket.emit('client event', { socket: 'io' });
-});
+// socket.on('server event', function (data) {
+//   console.log(data);
+//   socket.emit('client event', { socket: 'io' });
+// });
 
-var socketEmitClientEven = function(data) {
-  socket.emit('client event', data); 
-}
+// var socketEmitClientEvent = function(data) {
+//   socket.emit('client event', data); 
+// }
 
 getLocation();
