@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
-import Map from './Map'
-import logo from './logo.svg';
+import Map from './Map';
+// import NavBar from './NavBar';
+// import logo from './logo.svg';
+import Appbar from 'muicss/lib/react/appbar';
+import Button from 'muicss/lib/react/button';
+// import Container from 'muicss/lib/react/container';
 import './App.css';
 
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>BOAT TALKS</h2>
-        </div>
-        <Map/>
+      <div className="App">        
+          <Appbar>
+            <div>              
+              <Button color="primary">Map</Button>
+              <Button color="primary">Chat</Button>
+              <Button color="primary">Profile</Button>
+            </div>
+          </Appbar>                  
+          <Map/>      
       </div>
     );
   }
