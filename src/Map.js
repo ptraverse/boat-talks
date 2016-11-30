@@ -26,7 +26,16 @@ class Map extends Component {
         var map = L.map('map');
         map.setView(userCenter, zoom);
         
-        var overlay = new JNC.Leaflet.LeafletNavionicsOverlay({
+        var base = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        });
+        base.addTo(map);
+
+        console.log(JNC);
+        console.log(JNC.Leaflet);
+        console.log(JNC.Leaflet.NavionicsOverlay);
+        var overlay = new JNC.Leaflet.NavionicsOverlay({
             navKey: 'Navionics_webapi_02834',
             chartType: JNC.NAVIONICS_CHARTS.NAUTICAL,
             isTransparent: false,
@@ -39,7 +48,6 @@ class Map extends Component {
         //     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         // });
         // OpenStreetMap_Mapnik.addTo(map);
-        
         // var OpenSeaMap = L.tileLayer('http://t1.openseamap.org/seamark/{z}/{x}/{y}.png', {
         //     attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'
         // });        
