@@ -26,7 +26,10 @@ class Map extends Component {
         var map = L.map('map');
         map.setView(userCenter, zoom);
         
-        var overlay = new JNC.Leaflet.LeafletNavionicsOverlay({
+        console.log(JNC);
+        console.log(JNC.Leaflet);
+        
+        var overlay = new JNC.Leaflet.NavionicsOverlay({
             navKey: 'Navionics_webapi_02834',
             chartType: JNC.NAVIONICS_CHARTS.NAUTICAL,
             isTransparent: false,

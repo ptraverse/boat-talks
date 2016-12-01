@@ -1,14 +1,37 @@
 // import MUI colors
-@import "bower_components/mui/src/sass/mui/colors";
+@import "bower_components/mui/src/sass/mui/colors"
 
 // customize MUI variables
-$mui-primary-color:       mui-color('green', 'A400');
-$mui-primary-color-dark:  mui-color('green', 'A700');
-$mui-primary-color-light: mui-color('green', 'A100');
+$mui-primary-color:       mui-color('blue-grey', '700')
+$mui-primary-color-dark:  mui-color('blue-grey', '800')
+$mui-primary-color-light: mui-color('blue-grey', '900')
 
-$mui-accent-color:        mui-color('teal', 'A200');
-$mui-accent-color-dark:   mui-color('teal', 'A100');
-$mui-accent-color-light:  mui-color('teal', 'A400');
+$mui-accent-color:        mui-color('blue', 'A200')
+$mui-accent-color-dark:   mui-color('blue', 'A100')
+$mui-accent-color-light:  mui-color('blue', 'A400')
 
 // import MUI SASS
-@import "bower_components/mui/src/sass/mui";
+@import "bower_components/mui/src/sass/mui"
+
+.App
+  text-align: center
+
+.App-logo
+  animation: App-logo-spin infinite 20s linear
+  height: 80px
+
+.App-header
+  background-color: #222
+  height: 150px
+  padding: 20px
+  color: white
+
+.App-intro
+  font-size: large
+
+@keyframes App-logo-spin
+  from
+    transform: rotate(0deg)
+
+  to
+    transform: rotate(360deg)
