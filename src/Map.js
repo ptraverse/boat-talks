@@ -33,7 +33,7 @@ class Map extends Component {
 
         console.log(JNC);
         console.log(JNC.Leaflet);
-        console.log(JNC.Leaflet.NavionicsOverlay);
+        console.log(JNC.Leaflet.LeafletNavionicsOverlay);
 
         var overlay = new JNC.Leaflet.NavionicsOverlay({
             navKey: 'Navionics_webapi_02834',
