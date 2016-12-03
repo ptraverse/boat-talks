@@ -8,7 +8,8 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceRoot}/node_modules/react-scripts/scripts/start.js",
+            "program": "${workspaceRoot}/scripts/start.js",
+            "args": [],
             "cwd": "${workspaceRoot}"
         },
         {
