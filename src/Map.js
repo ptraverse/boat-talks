@@ -31,10 +31,6 @@ class Map extends Component {
         });
         base.addTo(map);
 
-        console.log(JNC);
-        console.log(JNC.Leaflet);
-        console.log(JNC.Leaflet.LeafletNavionicsOverlay);
-
         var overlay = new JNC.Leaflet.NavionicsOverlay({
             navKey: 'Navionics_webapi_02834',
             chartType: JNC.NAVIONICS_CHARTS.NAUTICAL,

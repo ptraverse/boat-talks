@@ -7,8 +7,23 @@ import Appbar from 'muicss/lib/react/appbar';
 import Button from 'muicss/lib/react/button';
 // import Container from 'muicss/lib/react/container';
 import './App.sass';
+/* global io */
 
 class App extends Component {
+
+  componentDidMount() {
+      var socket = io();
+      socket.on('connect', function(){
+         console.log('frontend socket.io connected'); 
+      });
+      socket.on('event', function(data){
+        console.log('frontend socket.io event');
+      });
+      socket.on('disconnect', function(){
+        console.log('frontend socket.io disconnected');
+      });
+  }
+
   render() {
     return (
       <div className="App">        
