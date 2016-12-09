@@ -31,13 +31,16 @@ class Map extends Component {
         });
         base.addTo(map);
 
-        var overlay = new JNC.Leaflet.NavionicsOverlay({
-            navKey: 'Navionics_webapi_02834',
-            chartType: JNC.NAVIONICS_CHARTS.NAUTICAL,
-            isTransparent: false,
-            zIndex: 1
-        });
-        overlay.addTo(map);
+        // only enable the navionics map on the domain the key is tied to
+        if (window.location.href.indexOf('boat-talks-c9-nodejs-ptraverse.c9users.io') !== -1) {
+            var overlay = new JNC.Leaflet.NavionicsOverlay({
+                navKey: 'Navionics_webapi_02834',
+                chartType: JNC.NAVIONICS_CHARTS.NAUTICAL,
+                isTransparent: false,
+                zIndex: 1
+            });
+            overlay.addTo(map);
+        }
 
         // var OpenStreetMap_Mapnik = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         //     maxZoom: 19,

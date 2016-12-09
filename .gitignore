@@ -3,3 +3,4 @@ bower_components/
 yarn.lock
 build
 npm-debug.log
+public/app.js

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Map from './Map';
-// import NavBar from './NavBar';
+import Map from './Map.jsx';
+// import NavBar from './NavBar.jsx';
 // import logo from './logo.svg';
 // import helm from './helm.svg';
 import Appbar from 'muicss/lib/react/appbar';
