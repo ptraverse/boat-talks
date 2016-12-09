@@ -23,13 +23,7 @@ class Map extends Component {
         var zoom = 10;
           
         var map = L.map('map');
-        map.setView(userCenter, zoom);
-        
-        var base = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        });
-        base.addTo(map);
+        map.setView(userCenter, zoom);        
 
         // only enable the navionics map on the domain the key is tied to
         if (window.location.href.indexOf('boat-talks-c9-nodejs-ptraverse.c9users.io') !== -1) {
@@ -40,17 +34,18 @@ class Map extends Component {
                 zIndex: 1
             });
             overlay.addTo(map);
+        } else {
+            var OpenStreetMap_BlackAndWhite = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            });
+            OpenStreetMap_BlackAndWhite.addTo(map);
+            //does this even work?
+            var OpenSeaMap = L.tileLayer('http://t1.openseamap.org/seamark/{z}/{x}/{y}.png', {
+                attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'
+            });        
+            OpenSeaMap.addTo(map);
         }
-
-        // var OpenStreetMap_Mapnik = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        //     maxZoom: 19,
-        //     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        // });
-        // OpenStreetMap_Mapnik.addTo(map);
-        // var OpenSeaMap = L.tileLayer('http://t1.openseamap.org/seamark/{z}/{x}/{y}.png', {
-        //     attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'
-        // });        
-        // OpenSeaMap.addTo(map);
 
         L.marker(userCenter).addTo(map);
     }
