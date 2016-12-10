@@ -15,53 +15,62 @@ var sockets = [];
 io.on('connection', function (socket) {
 
     messages.forEach(function (data) {
-      socket.emit('message', data);
+        socket.emit('message', data);
     });
 
     sockets.push(socket);
 
     socket.on('disconnect', function () {
-      sockets.splice(sockets.indexOf(socket), 1);
-      updateRoster();
+        sockets.splice(sockets.indexOf(socket), 1);
+        updateRoster();
     });
 
     socket.on('message', function (msg) {
-      var text = String(msg || '');
+        var text = String(msg || '');
 
-      if (!text)
-        return;
+        if (!text)
+            return;
 
-      socket.get('name', function (err, name) {
+        var name = socket.name;
         var data = {
-          name: name,
-          text: text
+            name: name,
+            text: text
         };
 
         broadcast('message', data);
         messages.push(data);
-      });
+        
     });
 
     socket.on('identify', function (name) {
         console.log('new user identifying: ' + name);
         socket.name = String(name || 'Anonymous');
         console.log('socket set name done: ' + socket.name);
-        // updateRoster();        
+        updateRoster();        
     });
+
+    socket.on('move', function(lat, lon) {
+        console.log('user moving: ' + socket.name + lat + ', ' + lon);
+        var data = {
+            name: socket.name,
+            lat: lat,
+            lon: lon
+        };
+        broadcast('move', data);        
+    });    
   });
 
 function updateRoster() {
-  async.map(
-    sockets,
-    function (socket, callback) {
-        console.log(socket);
-        callback();
-    //   socket.get('name', callback);
-    },
-    function (err, names) {
-      broadcast('roster', names);
-    }
-  );
+    async.map(
+        sockets,
+        function (socket, callback) {
+            socket.name;
+            callback();        
+        },
+        function (err, names) {
+        broadcast('roster', names);
+        }
+    );
 }
 
 function broadcast(event, data) {

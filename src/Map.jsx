@@ -6,6 +6,7 @@ class Map extends Component {
     
     componentDidMount() {
       
+        /*Initial Map Drawing START */
         function getRandom(min, max) {
           return Math.random() * (max - min) + min;
         }
@@ -48,6 +49,24 @@ class Map extends Component {
         }
 
         L.marker(userCenter).addTo(map);
+        /*Initial Map Drawing END */
+
+
+        /* Socket.io interactions START*/
+        var socket = io();
+        socket.on('connect', function(){
+            console.log('frontend socket.io connected from Map component, identifying as foo');                        
+        });
+        socket.on('event', function(data){
+            console.log('frontend socket.io event');
+        });
+        socket.on('move', function(data){
+            console.log('frontend socket.io MOVE: ' + data.name + ' ' + data.lat + ' ' +  data.lon);            
+        });
+        socket.on('disconnect', function(){
+            console.log('frontend socket.io disconnected');
+        });
+        /* Socket.io END */
     }
   
     render() {

@@ -14,8 +14,9 @@ class App extends Component {
   componentDidMount() {
       var socket = io();
       socket.on('connect', function(){
-         console.log('frontend socket.io connected, identifying as foo');
-         socket.emit('identify', 'foo'); 
+         console.log('frontend socket.io connected from App component, identifying as foo');
+         socket.emit('identify', 'foo');
+         socket.emit('move', '49.21', '-123.51'); 
       });
       socket.on('event', function(data){
         console.log('frontend socket.io event');
