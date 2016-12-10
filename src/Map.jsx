@@ -38,7 +38,7 @@ class Map extends Component {
             var overlay = new JNC.Leaflet.NavionicsOverlay({
                 navKey: 'Navionics_webapi_02834',
                 chartType: JNC.NAVIONICS_CHARTS.NAUTICAL,
-                isTransparent: false,
+                isTransparent: true,
                 zIndex: 1
             });
             overlay.addTo(map);
@@ -50,7 +50,8 @@ class Map extends Component {
             OpenStreetMap_BlackAndWhite.addTo(map);
             //does this even work?
             var OpenSeaMap = L.tileLayer('http://t1.openseamap.org/seamark/{z}/{x}/{y}.png', {
-                attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'
+                attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors',
+                opacity: 0.5
             });        
             OpenSeaMap.addTo(map);
         }
@@ -74,8 +75,8 @@ class Map extends Component {
         socket.on('move', function(data){
             console.log('frontend socket.io MOVE: ' + data.name + ' ' + data.lat + ' ' +  data.lon);
             var otherMarker = L.AwesomeMarkers.icon({
-                icon: 'users',    
-                iconColor: 'red',
+                icon: 'user',    
+                iconColor: 'cadetblue',
                 prefix: 'fa'
             });
             console.log('drawing other marker');
