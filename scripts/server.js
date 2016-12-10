@@ -13,6 +13,7 @@ var messages = [];
 var sockets = [];
 
 io.on('connection', function (socket) {
+
     messages.forEach(function (data) {
       socket.emit('message', data);
     });
@@ -42,9 +43,10 @@ io.on('connection', function (socket) {
     });
 
     socket.on('identify', function (name) {
-      socket.set('name', String(name || 'Anonymous'), function (err) {
-        updateRoster();
-      });
+        console.log('new user identifying: ' + name);
+        socket.name = String(name || 'Anonymous');
+        console.log('socket set name done: ' + socket.name);
+        // updateRoster();        
     });
   });
 
@@ -52,7 +54,9 @@ function updateRoster() {
   async.map(
     sockets,
     function (socket, callback) {
-      socket.get('name', callback);
+        console.log(socket);
+        callback();
+    //   socket.get('name', callback);
     },
     function (err, names) {
       broadcast('roster', names);

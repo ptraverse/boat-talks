@@ -14,7 +14,8 @@ class App extends Component {
   componentDidMount() {
       var socket = io();
       socket.on('connect', function(){
-         console.log('frontend socket.io connected'); 
+         console.log('frontend socket.io connected, identifying as foo');
+         socket.emit('identify', 'foo'); 
       });
       socket.on('event', function(data){
         console.log('frontend socket.io event');
