@@ -4,6 +4,15 @@ import './Map.css';
 
 class Map extends Component {        
     
+    constructor(props) {
+        super(props);
+        this.state = {
+            'center': [49.2, -123.5],
+            'zoom': 10
+        };
+    }  
+
+
     componentDidMount() {
       
         /*Initial Map Drawing START */
@@ -12,19 +21,17 @@ class Map extends Component {
         }
 
         $('#map').focus();
-      
-        var userCenter = [49.2, -123.5];
+              
         var skew = true;        
         if (skew) {
             var xAdj = 0.25;
             var yAdj = 0.5;
-            userCenter[0] = getRandom(userCenter[0] - xAdj, userCenter[0] + xAdj);
-            userCenter[1] = getRandom(userCenter[1] - yAdj, userCenter[1] + yAdj);
-        }
-        var zoom = 10;
+            this.state.center[0] = getRandom(this.state.center[0] - xAdj, this.state.center[0] + xAdj);
+            this.state.center[1] = getRandom(this.state.center[1] - yAdj, this.state.center[1] + yAdj);
+        }        
           
         var map = L.map('map');
-        map.setView(userCenter, zoom);        
+        map.setView(this.state.center, this.state.zoom);        
 
         // only enable the navionics map on the domain the key is tied to
         if (window.location.href.indexOf('boat-talks-c9-nodejs-ptraverse.c9users.io') !== -1) {
@@ -47,21 +54,33 @@ class Map extends Component {
             });        
             OpenSeaMap.addTo(map);
         }
-
-        L.marker(userCenter).addTo(map);
+        var selfMarker = L.AwesomeMarkers.icon({
+                icon: 'user',    
+                iconColor: 'blue',
+                prefix: 'fa'
+        });
+        L.marker(this.state.center, {icon: selfMarker}).addTo(map);        
         /*Initial Map Drawing END */
 
 
         /* Socket.io interactions START*/
         var socket = io();
         socket.on('connect', function(){
-            console.log('frontend socket.io connected from Map component, identifying as foo');                        
+            console.log('frontend socket.io connected from Map component, identifying as foo');                                    
         });
         socket.on('event', function(data){
             console.log('frontend socket.io event');
         });
         socket.on('move', function(data){
-            console.log('frontend socket.io MOVE: ' + data.name + ' ' + data.lat + ' ' +  data.lon);            
+            console.log('frontend socket.io MOVE: ' + data.name + ' ' + data.lat + ' ' +  data.lon);
+            var otherMarker = L.AwesomeMarkers.icon({
+                icon: 'users',    
+                iconColor: 'red',
+                prefix: 'fa'
+            });
+            console.log('drawing other marker');
+            L.marker([data.lat, data.lon], {icon: otherMarker}).addTo(map);            
+            
         });
         socket.on('disconnect', function(){
             console.log('frontend socket.io disconnected');

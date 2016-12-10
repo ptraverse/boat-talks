@@ -3,3 +3,8 @@
     display: block;
     border: 1px grey dashed;
 }
+
+.awesome-marker i {
+    font-size: 18px;
+    margin-top: 8px;
+}

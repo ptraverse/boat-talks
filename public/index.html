@@ -9,41 +9,35 @@
     <!-- CDN SCRIPTS -->
     <!-- jQuery -->
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>    
+
     <!--Leaflet API-->
     <!-- Note that this must come BEFORE jNavionicsChart -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    
+    <!-- Leaflet Icons -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.css">
+    <link rel="stylesheet" href="/leaflet.awesome-markers.css">
+    <script src="/leaflet.awesome-markers.js"></script>
+
     <!-- jNavionicsChart -->
     <link rel="stylesheet" href="//webapiv2.navionics.com/dist/webapi/webapi.min.css">
     <script type="text/javascript" src="//webapiv2.navionics.com/dist/webapi/webapi.min.no-dep.js"></script>
+    
     <!-- Socket.io -->
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.1/socket.io.js"></script>
         
+      
     <!-- Bundled JS -->
-    <script type="text/javascript" src="/app.js" async></script>
+    <script type="text/javascript" src="/app.js" defer async></script>
 
-    <!--
-    //   Notice the use of %PUBLIC_URL% in the tag above.
-    //   It will be replaced with the URL of the `public` folder during the build.
-    //   Only files inside the `public` folder can be referenced from the HTML.
-
-    //   Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-    //   work correctly both with client-side routing and a non-root public URL.
-    //   Learn how to configure a non-root public URL by running `npm run build`.
-    // -->
     <title>Boat Talks</title>
   </head>
   <body data-root="//webapiv2.navionics.com/dist/webapi/images">
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start`.
-      To create a production bundle, use `npm run build`.
-    -->
+    <div id="root"></div>    
   </body>
 </html>
