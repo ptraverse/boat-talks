@@ -50,8 +50,8 @@ io.on('connection', function (socket) {
     });
 
     socket.on('move', function(data) {
-        console.log('user moving: ' + data.lat + ', ' + data.lon);
-        broadcast('move', data);
+        console.log('broadcast moving: ' + data.lat + ', ' + data.lon);
+        socket.broadcast.emit('move', data);
     });
   });
 

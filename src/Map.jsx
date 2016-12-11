@@ -7,8 +7,8 @@ class Map extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            'lat': '49',
-            'lon': '-123',
+            'lat': '49.15',
+            'lon': '-123.2',
             'zoom': 10
         };
 
@@ -46,19 +46,17 @@ class Map extends Component {
             });
             OpenSeaMap.addTo(map);
         }
-        // draw the map centered on user loc.
-        console.log('before initial setView');
+        // draw the map initially centered on hardcoded location.
         map.setView(this.getCenterObj(), this.state.zoom);
-        console.log('after initial setView');
         /*Initial Map Drawing END */
 
         /* START HTML5 Geolocation */
         function getRandom(min, max) {
           return Math.random() * (max - min) + min;
         }
-        console.log("START Navigator Geolocation");
         navigator.geolocation.getCurrentPosition(
             (position) => {
+                // add skew, for developing socket on a single machine
                 var skew = true;
                 if (skew) {
                     var xAdj = 0.25;
@@ -73,15 +71,13 @@ class Map extends Component {
                         lon: position.coords.longitude
                     });
                 }
-                console.log('double cheking setState worked: ');
-                console.log(this.getCenterObj());
                 var selfMarker = L.AwesomeMarkers.icon({
                     icon: 'user',
                     iconColor: 'white',
-                    markerColor: 'cadetblue',
+                    markerColor: 'blue',
                     prefix: 'fa'
                 });
-                console.log('before adding center icon');
+                // move map to actual user center location
                 map.setView(this.getCenterObj(), this.state.zoom);
                 L.marker(this.getCenterObj(), {icon: selfMarker}).addTo(map);
                 var center = this.getCenterObj();
@@ -89,9 +85,8 @@ class Map extends Component {
                   'lat': center[0],
                   'lon': center[1]
                 };
-                console.log('emitting MOVE 1');
+                // broadcast move to everyone else
                 socket.emit('move', data);
-                console.log('after adding center icon');
             },
             (error) => alert(JSON.stringify(error)),
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
@@ -101,31 +96,23 @@ class Map extends Component {
 
         /* Socket.io interactions START*/
         socket.on('connect', () => {
-            console.log('frontend socket.io connected from Map component, identifying as foobar, moving');
-            var center = this.getCenterObj();
-            var data = {
-                'lat': center[0],
-                'lon': center[1]
-            };
-            console.log('emitting MOVE 2');
-            socket.emit('move', data);
+            console.log('frontend connected from Map component');
         });
         socket.on('event', function(data){
-            console.log('frontend socket.io event');
+            console.log('frontend received event');
         });
         socket.on('move', function(data){
-            console.log('frontend socket.io received MOVE');
-            console.log(JSON.stringify(data));
+            console.log('frontend received MOVE');
             var otherMarker = L.AwesomeMarkers.icon({
                 icon: 'user',
-                iconColor: 'cadetblue',
+                iconColor: 'white',
+                markerColor: 'cadetblue',
                 prefix: 'fa'
             });
-            console.log('drawing other marker');
             L.marker([data.lat, data.lon], {icon: otherMarker}).addTo(map);
         });
         socket.on('disconnect', function(){
-            console.log('frontend socket.io disconnected');
+            console.log('frontend disconnected');
         });
         /* Socket.io END */
     }
