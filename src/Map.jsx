@@ -91,7 +91,6 @@ class Map extends Component {
             (error) => alert(JSON.stringify(error)),
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
         );
-        console.log("END Navigator Geolocation");
         /* END HTML5 Geolocation */
 
         /* Socket.io interactions START*/

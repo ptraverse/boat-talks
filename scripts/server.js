@@ -56,16 +56,12 @@ io.on('connection', function (socket) {
   });
 
 function updateRoster() {
-    async.map(
-        sockets,
-        function (socket, callback) {
-            socket.name;
-            callback();
-        },
-        function (err, names) {
-        broadcast('roster', names);
-        }
-    );
+    async.map(sockets, function (socket, callback) {
+      socket.name;
+      callback();
+    }, function (err, names) {
+      broadcast('roster', names);
+    });
 }
 
 function broadcast(event, data) {
