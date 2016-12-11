@@ -51,7 +51,7 @@ io.on('connection', function (socket) {
 
     socket.on('move', function(data) {
         console.log('user moving: ' + data.lat + ', ' + data.lon);
-        // broadcast('move', data);
+        broadcast('move', data);
     });
   });
 

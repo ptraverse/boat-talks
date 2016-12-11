@@ -19,12 +19,8 @@ class Map extends Component {
         return [this.state.lat, this.state.lon];
     }
 
-    componentWillMount() {
-        console.log('START component will mount');
-        console.log('END component will mount');
-    }
-
     componentDidMount() {
+        var socket = io();
 
         /*Initial Map Drawing START */
         $('#map').focus();
@@ -88,6 +84,13 @@ class Map extends Component {
                 console.log('before adding center icon');
                 map.setView(this.getCenterObj(), this.state.zoom);
                 L.marker(this.getCenterObj(), {icon: selfMarker}).addTo(map);
+                var center = this.getCenterObj();
+                var data = {
+                  'lat': center[0],
+                  'lon': center[1]
+                };
+                console.log('emitting MOVE 1');
+                socket.emit('move', data);
                 console.log('after adding center icon');
             },
             (error) => alert(JSON.stringify(error)),
@@ -97,7 +100,6 @@ class Map extends Component {
         /* END HTML5 Geolocation */
 
         /* Socket.io interactions START*/
-        var socket = io();
         socket.on('connect', () => {
             console.log('frontend socket.io connected from Map component, identifying as foobar, moving');
             var center = this.getCenterObj();
@@ -105,16 +107,14 @@ class Map extends Component {
                 'lat': center[0],
                 'lon': center[1]
             };
-            console.log('latbug !?');
-            console.log(JSON.stringify(center));
-            console.log(JSON.stringify(data));
+            console.log('emitting MOVE 2');
             socket.emit('move', data);
         });
         socket.on('event', function(data){
             console.log('frontend socket.io event');
         });
         socket.on('move', function(data){
-            console.log('frontend socket.io MOVE');
+            console.log('frontend socket.io received MOVE');
             console.log(JSON.stringify(data));
             var otherMarker = L.AwesomeMarkers.icon({
                 icon: 'user',
