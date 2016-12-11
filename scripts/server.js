@@ -39,25 +39,20 @@ io.on('connection', function (socket) {
 
         broadcast('message', data);
         messages.push(data);
-        
+
     });
 
     socket.on('identify', function (name) {
         console.log('new user identifying: ' + name);
         socket.name = String(name || 'Anonymous');
         console.log('socket set name done: ' + socket.name);
-        updateRoster();        
+        updateRoster();
     });
 
-    socket.on('move', function(lat, lon) {
-        console.log('user moving: ' + socket.name + lat + ', ' + lon);
-        var data = {
-            name: socket.name,
-            lat: lat,
-            lon: lon
-        };
-        broadcast('move', data);        
-    });    
+    socket.on('move', function(data) {
+        console.log('user moving: ' + data.lat + ', ' + data.lon);
+        // broadcast('move', data);
+    });
   });
 
 function updateRoster() {
@@ -65,7 +60,7 @@ function updateRoster() {
         sockets,
         function (socket, callback) {
             socket.name;
-            callback();        
+            callback();
         },
         function (err, names) {
         broadcast('roster', names);

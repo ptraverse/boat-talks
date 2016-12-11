@@ -7,39 +7,10 @@ class Map extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            'lat': '',
-            'lon': '',
+            'lat': '49',
+            'lon': '-123',
             'zoom': 10
         };
-
-        function getRandom(min, max) {
-          return Math.random() * (max - min) + min;
-        }
-
-        console.log("START Navigator Geolocation");
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                var skew = true;
-                if (skew) {
-                    var xAdj = 0.25;
-                    var yAdj = 0.5;
-                    this.setState({
-                        lat: getRandom(position.coords.latitude - xAdj, position.coords.latitude + xAdj),
-                        lon: getRandom(position.coords.longitude - yAdj, position.coords.longitude + yAdj)
-                    });
-                } else {
-                    this.setState({
-                        lat: position.coords.latitude,
-                        lon: position.coords.longitude
-                    });
-                }
-                console.log('double cheking setState worked: ');
-                console.log(this.getCenterObj());
-            },
-            (error) => alert(JSON.stringify(error)),
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-        );
-        console.log("END Navigator Geolocation");
 
         this.getCenterObj = this.getCenterObj.bind(this);
     }
@@ -80,16 +51,50 @@ class Map extends Component {
             OpenSeaMap.addTo(map);
         }
         // draw the map centered on user loc.
+        console.log('before initial setView');
         map.setView(this.getCenterObj(), this.state.zoom);
-        var selfMarker = L.AwesomeMarkers.icon({
-            icon: 'user',
-            iconColor: 'white',
-            markerColor: 'cadetblue',
-            prefix: 'fa'
-        });
-        L.marker(this.getCenterObj(), {icon: selfMarker}).addTo(map);
+        console.log('after initial setView');
         /*Initial Map Drawing END */
 
+        /* START HTML5 Geolocation */
+        function getRandom(min, max) {
+          return Math.random() * (max - min) + min;
+        }
+        console.log("START Navigator Geolocation");
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                var skew = true;
+                if (skew) {
+                    var xAdj = 0.25;
+                    var yAdj = 0.5;
+                    this.setState({
+                        lat: getRandom(position.coords.latitude - xAdj, position.coords.latitude + xAdj),
+                        lon: getRandom(position.coords.longitude - yAdj, position.coords.longitude + yAdj)
+                    });
+                } else {
+                    this.setState({
+                        lat: position.coords.latitude,
+                        lon: position.coords.longitude
+                    });
+                }
+                console.log('double cheking setState worked: ');
+                console.log(this.getCenterObj());
+                var selfMarker = L.AwesomeMarkers.icon({
+                    icon: 'user',
+                    iconColor: 'white',
+                    markerColor: 'cadetblue',
+                    prefix: 'fa'
+                });
+                console.log('before adding center icon');
+                map.setView(this.getCenterObj(), this.state.zoom);
+                L.marker(this.getCenterObj(), {icon: selfMarker}).addTo(map);
+                console.log('after adding center icon');
+            },
+            (error) => alert(JSON.stringify(error)),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+        );
+        console.log("END Navigator Geolocation");
+        /* END HTML5 Geolocation */
 
         /* Socket.io interactions START*/
         var socket = io();
