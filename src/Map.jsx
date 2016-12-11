@@ -7,6 +7,7 @@ class Map extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            'name': Math.floor((Math.random() * 100) + 1),
             'lat': '49.15',
             'lon': '-123.2',
             'zoom': 10
@@ -96,6 +97,9 @@ class Map extends Component {
         /* Socket.io interactions START*/
         socket.on('connect', () => {
             console.log('frontend - connected from Map component');
+            console.log('frontend - identifying with location as ' + this.state.name);
+            var data = this.state;
+            socket.emit('identifyWithLocation', data);
         });
         socket.on('event', function(data){
             console.log('frontend - received event');
@@ -111,7 +115,7 @@ class Map extends Component {
             L.marker([data.lat, data.lon], {icon: otherMarker}).addTo(map);
         });
         socket.on('disconnect', function(){
-            console.log('frontend - disconnected');
+            console.log('frontend - disconnecting');
         });
         /* Socket.io END */
     }
