@@ -6,32 +6,28 @@ class Map extends Component {
     
     constructor(props) {
         super(props);
-        this.state = {
-            'center': [49.2, -123.5],
+        this.state = {            
+            'lat': '',
+            'lon': '',            
             'zoom': 10
         };
-    }  
+        this.watchID = null;
+        this.getCenterObj = this.getCenterObj.bind(this);        
+    }     
 
+    getCenterObj() {
+        return [this.state.lat, this.state.lon];
+    }
 
     componentDidMount() {
       
         /*Initial Map Drawing START */
         function getRandom(min, max) {
           return Math.random() * (max - min) + min;
-        }
-
-        $('#map').focus();
-              
-        var skew = true;        
-        if (skew) {
-            var xAdj = 0.25;
-            var yAdj = 0.5;
-            this.state.center[0] = getRandom(this.state.center[0] - xAdj, this.state.center[0] + xAdj);
-            this.state.center[1] = getRandom(this.state.center[1] - yAdj, this.state.center[1] + yAdj);
         }        
-          
-        var map = L.map('map');
-        map.setView(this.state.center, this.state.zoom);        
+
+        $('#map').focus();        
+        var map = L.map('map');                    
 
         // only enable the navionics map on the domain the key is tied to
         if (window.location.href.indexOf('boat-talks-c9-nodejs-ptraverse.c9users.io') !== -1) {
@@ -45,22 +41,38 @@ class Map extends Component {
         } else {
             var OpenStreetMap_BlackAndWhite = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
                 maxZoom: 18,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                // attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             });
             OpenStreetMap_BlackAndWhite.addTo(map);
             //does this even work?
             var OpenSeaMap = L.tileLayer('http://t1.openseamap.org/seamark/{z}/{x}/{y}.png', {
-                attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors',
+                // attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors',
                 opacity: 0.5
             });        
             OpenSeaMap.addTo(map);
         }
-        var selfMarker = L.AwesomeMarkers.icon({
-                icon: 'user',    
-                iconColor: 'blue',
-                prefix: 'fa'
-        });
-        L.marker(this.state.center, {icon: selfMarker}).addTo(map);        
+                
+        navigator.geolocation.getCurrentPosition(            
+            (position) => {              
+                console.log('navigator got position!');  
+                this.setState({
+                    lat: position.coords.latitude,
+                    lon: position.coords.longitude
+                });
+                console.log('getting center...: ');
+                console.log(this.getCenterObj());
+                map.setView(this.getCenterObj(), this.state.zoom);
+                var selfMarker = L.AwesomeMarkers.icon({
+                    icon: 'user',    
+                    iconColor: 'white',
+                    markerColor: 'cadetblue',
+                    prefix: 'fa'
+                });
+                L.marker(this.getCenterObj(), {icon: selfMarker}).addTo(map);
+            },
+            (error) => alert(JSON.stringify(error)),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+        );                
         /*Initial Map Drawing END */
 
 
@@ -80,8 +92,7 @@ class Map extends Component {
                 prefix: 'fa'
             });
             console.log('drawing other marker');
-            L.marker([data.lat, data.lon], {icon: otherMarker}).addTo(map);            
-            
+            L.marker([data.lat, data.lon], {icon: otherMarker}).addTo(map);                        
         });
         socket.on('disconnect', function(){
             console.log('frontend socket.io disconnected');
