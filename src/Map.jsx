@@ -2,32 +2,62 @@ import React, { Component } from 'react';
 import './Map.css';
 /* global L, JNC, $ */
 
-class Map extends Component {        
-    
+class Map extends Component {
+
     constructor(props) {
         super(props);
-        this.state = {            
+        this.state = {
             'lat': '',
-            'lon': '',            
+            'lon': '',
             'zoom': 10
         };
-        this.watchID = null;
-        this.getCenterObj = this.getCenterObj.bind(this);        
-    }     
+
+        function getRandom(min, max) {
+          return Math.random() * (max - min) + min;
+        }
+
+        console.log("START Navigator Geolocation");
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                var skew = true;
+                if (skew) {
+                    var xAdj = 0.25;
+                    var yAdj = 0.5;
+                    this.setState({
+                        lat: getRandom(position.coords.latitude - xAdj, position.coords.latitude + xAdj),
+                        lon: getRandom(position.coords.longitude - yAdj, position.coords.longitude + yAdj)
+                    });
+                } else {
+                    this.setState({
+                        lat: position.coords.latitude,
+                        lon: position.coords.longitude
+                    });
+                }
+                console.log('double cheking setState worked: ');
+                console.log(this.getCenterObj());
+            },
+            (error) => alert(JSON.stringify(error)),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+        );
+        console.log("END Navigator Geolocation");
+
+        this.getCenterObj = this.getCenterObj.bind(this);
+    }
 
     getCenterObj() {
         return [this.state.lat, this.state.lon];
     }
 
-    componentDidMount() {
-      
-        /*Initial Map Drawing START */
-        function getRandom(min, max) {
-          return Math.random() * (max - min) + min;
-        }        
+    componentWillMount() {
+        console.log('START component will mount');
+        console.log('END component will mount');
+    }
 
-        $('#map').focus();        
-        var map = L.map('map');                    
+    componentDidMount() {
+
+        /*Initial Map Drawing START */
+        $('#map').focus();
+        var map = L.map('map');
 
         // only enable the navionics map on the domain the key is tied to
         if (window.location.href.indexOf('boat-talks-c9-nodejs-ptraverse.c9users.io') !== -1) {
@@ -41,65 +71,60 @@ class Map extends Component {
         } else {
             var OpenStreetMap_BlackAndWhite = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
                 maxZoom: 18,
-                // attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             });
             OpenStreetMap_BlackAndWhite.addTo(map);
-            //does this even work?
             var OpenSeaMap = L.tileLayer('http://t1.openseamap.org/seamark/{z}/{x}/{y}.png', {
-                // attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors',
+                attribution: 'NOT TO BE USED FOR NAVIGATION',
                 opacity: 0.5
-            });        
+            });
             OpenSeaMap.addTo(map);
         }
-                
-        navigator.geolocation.getCurrentPosition(            
-            (position) => {              
-                console.log('navigator got position!');  
-                this.setState({
-                    lat: position.coords.latitude,
-                    lon: position.coords.longitude
-                });
-                console.log('getting center...: ');
-                console.log(this.getCenterObj());
-                map.setView(this.getCenterObj(), this.state.zoom);
-                var selfMarker = L.AwesomeMarkers.icon({
-                    icon: 'user',    
-                    iconColor: 'white',
-                    markerColor: 'cadetblue',
-                    prefix: 'fa'
-                });
-                L.marker(this.getCenterObj(), {icon: selfMarker}).addTo(map);
-            },
-            (error) => alert(JSON.stringify(error)),
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-        );                
+        // draw the map centered on user loc.
+        map.setView(this.getCenterObj(), this.state.zoom);
+        var selfMarker = L.AwesomeMarkers.icon({
+            icon: 'user',
+            iconColor: 'white',
+            markerColor: 'cadetblue',
+            prefix: 'fa'
+        });
+        L.marker(this.getCenterObj(), {icon: selfMarker}).addTo(map);
         /*Initial Map Drawing END */
 
 
         /* Socket.io interactions START*/
         var socket = io();
-        socket.on('connect', function(){
-            console.log('frontend socket.io connected from Map component, identifying as foo');                                    
+        socket.on('connect', () => {
+            console.log('frontend socket.io connected from Map component, identifying as foobar, moving');
+            var center = this.getCenterObj();
+            var data = {
+                'lat': center[0],
+                'lon': center[1]
+            };
+            console.log('latbug !?');
+            console.log(JSON.stringify(center));
+            console.log(JSON.stringify(data));
+            socket.emit('move', data);
         });
         socket.on('event', function(data){
             console.log('frontend socket.io event');
         });
         socket.on('move', function(data){
-            console.log('frontend socket.io MOVE: ' + data.name + ' ' + data.lat + ' ' +  data.lon);
+            console.log('frontend socket.io MOVE');
+            console.log(JSON.stringify(data));
             var otherMarker = L.AwesomeMarkers.icon({
-                icon: 'user',    
+                icon: 'user',
                 iconColor: 'cadetblue',
                 prefix: 'fa'
             });
             console.log('drawing other marker');
-            L.marker([data.lat, data.lon], {icon: otherMarker}).addTo(map);                        
+            L.marker([data.lat, data.lon], {icon: otherMarker}).addTo(map);
         });
         socket.on('disconnect', function(){
             console.log('frontend socket.io disconnected');
         });
         /* Socket.io END */
     }
-  
+
     render() {
         return (
             <div id="map">
@@ -107,7 +132,7 @@ class Map extends Component {
         );
     }
 
-    
+
 }
 
 export default Map;

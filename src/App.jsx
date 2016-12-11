@@ -16,7 +16,6 @@ class App extends Component {
       socket.on('connect', function(){
          console.log('frontend socket.io connected from App component, identifying as foo');
          socket.emit('identify', 'foo');
-        //  socket.emit('move', '49.21', '-123.51'); 
       });
       socket.on('event', function(data){
         console.log('frontend socket.io event');
@@ -28,16 +27,16 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">        
+      <div className="App">
           <Appbar>
-            <div className="Appbar">      
+            <div className="Appbar">
               {/* <img src={helm} className="App-logo" alt="logo" /> */}
               <Button color="primary">Map</Button>|
               <Button color="primary">Chat</Button>|
               <Button color="primary">Profile</Button>
             </div>
-          </Appbar>                  
-          <Map/>      
+          </Appbar>
+          <Map/>
       </div>
     );
   }
