@@ -95,13 +95,13 @@ class Map extends Component {
 
         /* Socket.io interactions START*/
         socket.on('connect', () => {
-            console.log('frontend connected from Map component');
+            console.log('frontend - connected from Map component');
         });
         socket.on('event', function(data){
-            console.log('frontend received event');
+            console.log('frontend - received event');
         });
         socket.on('move', function(data){
-            console.log('frontend received MOVE');
+            console.log('frontend - received MOVE');
             var otherMarker = L.AwesomeMarkers.icon({
                 icon: 'user',
                 iconColor: 'white',
@@ -111,7 +111,7 @@ class Map extends Component {
             L.marker([data.lat, data.lon], {icon: otherMarker}).addTo(map);
         });
         socket.on('disconnect', function(){
-            console.log('frontend disconnected');
+            console.log('frontend - disconnected');
         });
         /* Socket.io END */
     }
