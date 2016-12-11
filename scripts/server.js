@@ -10,25 +10,25 @@ var server = http.createServer(router);
 var io = socketio.listen(server);
 
 router.use(express.static(path.resolve(__dirname, '../public')));
-
 var roster = [];
+console.log('initialized empty roster: ');
+console.log(roster);
 
 io.on('connection', function (socket) {
+    console.log('a user connected: ' + socket.id);
 
-    socket.on('identify', function (name) {
-        console.log('backend - new user identifying: ' + name);
-        roster.push(socket.name);
-        console.log('backend - added socket to roster');
-        console.log(roster);
-    });
+    // socket.on('identify', function (name) {
+    //     console.log('backend - new user identifying: ' + name);
+    //     roster.push(socket.name);
+    //     console.log('backend - added socket to roster');
+    //     console.log(roster);
+    // });
 
     socket.on('identifyWithLocation', function (data) {
         console.log('backend - new user identifying WITH LOCATION: ' + data.name);
-        console.log(data.lat);
-        console.log(data.lon);
         roster.push(data);
-        console.log('backend - added socket with location to roster');
         console.log(roster);
+        socket.emit('rosterUpdate', roster);
     });
 
     socket.on('move', function(data) {
@@ -37,13 +37,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('disconnect', function() {
-        console.log(socket.name + ' disconnecting');
-        roster = _.filter(roster, function(index, sock) {
-            console.log('_filtering out index and sock:');
-            console.log(index);
-            console.log(sock);
-            return sock.name !== socket.name;
-        });
+        console.log(socket.name + ' disconnecting ' + socket.id);
     });
 
 });
