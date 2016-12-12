@@ -6,6 +6,7 @@ var express = require('express');
 var router = express();
 var server = http.createServer(router);
 var io = socketio.listen(server);
+var _ = require('underscore');
 
 router.use(express.static(path.resolve(__dirname, '../public')));
 var roster = [];
@@ -13,8 +14,9 @@ var roster = [];
 io.on('connection', function (socket) {
 
   socket.on('identifyWithLocation', function (data) {
+    data.id = socket.id;
     roster.push(data);
-    //SEND IT TO EVERYONE
+    //Send roster update to everyone (including the sender!)
     io.sockets.emit('rosterUpdate', roster);
   });
 
@@ -24,6 +26,12 @@ io.on('connection', function (socket) {
 
   socket.on('disconnect', function() {
     console.log(socket.name + ' disconnecting ' + socket.id);
+    roster = _.filter(roster, function(sock) {
+      return sock.id !== socket.id;
+    });
+    console.log('removed roster item?');
+    console.log(roster);
+    io.sockets.emit('rosterUpdate', roster);
   });
 
 });

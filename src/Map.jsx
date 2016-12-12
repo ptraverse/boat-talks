@@ -106,6 +106,9 @@ class Map extends Component {
     console.log(name);
     socket.on('rosterUpdate', (data) => {
       console.log('frontend - received roster update!');
+      // TODO Figure out How to clear all markers and draw them again?
+      let boats = new L.layerGroup();
+      // TODO End how to clear?
       let otherMarker = L.AwesomeMarkers.icon({
           icon: 'user',
           iconColor: 'white',
@@ -118,6 +121,7 @@ class Map extends Component {
           markerColor: 'blue',
           prefix: 'fa'
       });
+      // Go through Roster and add markers to layer
       _.each(data, (sock) => {
         let markerCenter = [sock.lat, sock.lon];
         let selfIcon = L.AwesomeMarkers.icon({
@@ -132,12 +136,21 @@ class Map extends Component {
           markerColor: 'blue',
           prefix: 'fa'
         });
+        let marker;
         if (sock.name == this.state.name) {
-          L.marker(markerCenter, {icon: selfIcon}).addTo(map);
+          marker = L.marker(markerCenter, {icon: selfIcon});
         } else {
-          L.marker(markerCenter, {icon: othersIcon}).addTo(map);
+          marker = L.marker(markerCenter, {icon: othersIcon});
         }
+        marker.bindPopup('<div>' + sock.name  + '</div>', {
+          showOnMouseOver: true
+        });
+        //add marker to Markers
+        marker.addTo(boats);
       });
+      // Add layer to map
+      console.log('adding boats layer to map: ');
+      boats.addTo(map);
     });
     socket.on('disconnect', () => {
       console.log('frontend - disconnecting');
