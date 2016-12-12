@@ -65,7 +65,8 @@
     "test": "node scripts/test.js --env=jsdom",
     "sass": "node-sass --watch ./src/App.sass public/build.css",
     "webpack": "webpack  --watch --config ./config/webpack.config.js",
-    "server": "nodemon scripts/server.js"
+    "server": "nodemon scripts/server.js",
+    "mongo": "mongod --dbpath ./data -f ./config/mongod.conf"
   },
   "jest": {
     "moduleFileExtensions": [
