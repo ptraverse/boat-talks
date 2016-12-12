@@ -49,6 +49,7 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "mongodb": "^2.2.15",
     "muicss": "^0.9.5",
     "node-sass": "^4.0.0",
     "nodemon": "^1.11.0",
@@ -63,7 +64,7 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "sass": "node-sass --watch ./src/App.sass public/build.css",
-    "webpack": "webpack  --watch --config webpack.config.js",
+    "webpack": "webpack  --watch --config ./config/webpack.config.js",
     "server": "nodemon scripts/server.js"
   },
   "jest": {

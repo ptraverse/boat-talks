@@ -17,6 +17,18 @@ npm install -g bower nodemon
 bower install
 ```
 
+## MongoDB Install
+Mac:
+```
+brew update
+brew install mongodb
+```
+Linux*:
+```
+npm install -g mongodb
+```
+*Still need to test this.
+
 ## Development
 First Terminal
 ```
@@ -26,4 +38,8 @@ npm run webpack
 Second Terminal
 ```
 nodemon scripts/server.js
+```
+Third Terminal
+```
+mongod --config ./config/mongod.conf
 ```
