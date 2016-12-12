@@ -23,11 +23,15 @@ Mac:
 brew update
 brew install mongodb
 ```
-Linux*:
+* Debian instructions coming soon 
+
+## PhantomJS Install
+Mac:
 ```
-npm install -g mongodb
+brew update
+brew install phantomjs
 ```
-*Still need to test this.
+* Debian instructions coming soon 
 
 ## Development
 First Terminal
