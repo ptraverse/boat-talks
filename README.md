@@ -25,5 +25,5 @@ npm run webpack
 ```
 Second Terminal
 ```
-npm run server
+nodemon scripts/server.js
 ```

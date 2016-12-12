@@ -27,8 +27,10 @@ io.on('connection', function (socket) {
     socket.on('identifyWithLocation', function (data) {
         console.log('backend - new user identifying WITH LOCATION: ' + data.name);
         roster.push(data);
+        console.log('new roster: ');
         console.log(roster);
-        socket.emit('rosterUpdate', roster);
+        //SEND IT TO EVERYONE
+        io.sockets.emit('rosterUpdate', roster);
     });
 
     socket.on('move', function(data) {
@@ -44,5 +46,6 @@ io.on('connection', function (socket) {
 
 server.listen(process.env.PORT || 8080, process.env.IP || "0.0.0.0", function(){
   var addr = server.address();
-  console.log("Chat server listening at", addr.address + ":" + addr.port);
+  console.log("Server listening at", addr.address + ":" + addr.port);
+  console.log("Due to geolocation, use Dev Server at http://localhost:8080");
 });

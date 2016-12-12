@@ -86,7 +86,7 @@ class Map extends Component {
                 let data = this.state;
                 socket.emit('identifyWithLocation', data);
             },
-            (error) => alert(JSON.stringify(error)),
+            (error) => alert('ERROR: ' + JSON.stringify(error)),
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
         );
         /* END HTML5 Geolocation */
@@ -95,20 +95,16 @@ class Map extends Component {
         socket.on('connect', () => {
             console.log('frontend - connected from Map component');
         });
-        socket.on('event', function(data){
+        socket.on('event', (data) => {
             console.log('frontend - received event');
         });
-        socket.on('move', function(data){
+        socket.on('move', (data) => {
             console.log('frontend - received MOVE');
-            // let otherMarker = L.AwesomeMarkers.icon({
-            //     icon: 'user',
-            //     iconColor: 'white',
-            //     markerColor: 'cadetblue',
-            //     prefix: 'fa'
-            // });
-            // L.marker([data.lat, data.lon], {icon: otherMarker}).addTo(map);
         });
-        socket.on('rosterUpdate', function(data) {
+        let name = this.state.name;
+        console.log('letnamethisname is : ');
+        console.log(name);
+        socket.on('rosterUpdate', (data) => {
             console.log('frontend - received roster update!');
             let otherMarker = L.AwesomeMarkers.icon({
                 icon: 'user',
@@ -122,27 +118,28 @@ class Map extends Component {
                 markerColor: 'blue',
                 prefix: 'fa'
             });
-            console.log('i dont have this naymore');
-            console.log(this);
-            let name = this.getName();
-            _.each(data, function(index, sock) {
-                console.log('adding socket from roster: ');
-                console.log(index);
-                console.log(socket);
+            _.each(data, (sock) => {
                 let markerCenter = [sock.lat, sock.lon];
-                if (sock.name == name) {
-                    let icon = {
-                      icon: selfMarker
-                    }
+                let selfIcon = L.AwesomeMarkers.icon({
+                    icon: 'user',
+                    iconColor: 'white',
+                    markerColor: 'cadetblue',
+                    prefix: 'fa'
+                });
+                let othersIcon = L.AwesomeMarkers.icon({
+                    icon: 'user',
+                    iconColor: 'white',
+                    markerColor: 'blue',
+                    prefix: 'fa'
+                });
+                if (sock.name == this.state.name) {
+                    L.marker(markerCenter, {icon: selfIcon}).addTo(map);
                 } else {
-                    let icon = {
-                      icon: otherMarker
-                    }
+                    L.marker(markerCenter, {icon: othersIcon}).addTo(map);
                 }
-                L.marker(markerCenter, icon).addTo(map);
             });
         });
-        socket.on('disconnect', function(){
+        socket.on('disconnect', () => {
             console.log('frontend - disconnecting');
         });
         /* Socket.io END */
