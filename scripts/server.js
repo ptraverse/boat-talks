@@ -11,9 +11,9 @@ var _ = require('underscore');
 router.use(express.static(path.resolve(__dirname, '../public')));
 var roster = [];
 
-io.on('connection', function (socket) {
+io.on('connection', function(socket) {
 
-  socket.on('identifyWithLocation', function (data) {
+  socket.on('identifyWithLocation', function(data) {
     data.id = socket.id;
     roster.push(data);
     //Send roster update to everyone (including the sender!)
