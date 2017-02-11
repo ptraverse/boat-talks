@@ -106,9 +106,15 @@ class Map extends Component {
     console.log(name);
     socket.on('rosterUpdate', (data) => {
       console.log('frontend - received roster update!');
-      // TODO Figure out How to clear all markers and draw them again?
       let boats = new L.layerGroup();
-      // TODO End how to clear?
+      // Remove all existing boats
+      map.eachLayer(function (layer) {
+        // Keep the tile layers
+        if (layer._leaflet_id != 22 && layer._leaflet_id != 24) {
+          map.removeLayer(layer);
+        }
+      });
+
       let otherMarker = L.AwesomeMarkers.icon({
           icon: 'user',
           iconColor: 'white',
@@ -142,14 +148,13 @@ class Map extends Component {
         } else {
           marker = L.marker(markerCenter, {icon: othersIcon});
         }
+        // TODO use a react component here to do a chat form!
         marker.bindPopup('<div>' + sock.name  + '</div>', {
           showOnMouseOver: true
         });
         //add marker to Markers
         marker.addTo(boats);
       });
-      // Add layer to map
-      console.log('adding boats layer to map: ');
       boats.addTo(map);
     });
     socket.on('disconnect', () => {

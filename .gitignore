@@ -1,6 +1,6 @@
 node_modules/
 bower_components/
 yarn.lock
-build
+yarn-error.log
 npm-debug.log
 public/app.js

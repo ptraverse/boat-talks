@@ -29,7 +29,7 @@ io.on('connection', function(socket) {
     roster = _.filter(roster, function(sock) {
       return sock.id !== socket.id;
     });
-    console.log('removed roster item?');
+    console.log('removed roster item ?');
     console.log(roster);
     io.sockets.emit('rosterUpdate', roster);
   });
