@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './Map.css';
+import ReactDOMServer from 'react-dom/server';
+import ChatInput from './ChatInput.jsx'
 /* global L, JNC, $ */
 
 class Map extends Component {
@@ -31,6 +33,10 @@ class Map extends Component {
     /*Initial Map Drawing START */
     $('#map').focus();
     let map = L.map('map');
+
+    let foo = function() {
+      alert('bar and foo!!');
+    };
 
     // only enable the navionics map on the domain the key is tied to
     if (window.location.href.indexOf('boat-talks-c9-nodejs-ptraverse.c9users.io') !== -1) {
@@ -162,7 +168,12 @@ class Map extends Component {
           marker = L.marker(markerCenter, {icon: othersIcon});
         }
         // TODO use a react component here to do a chat form!
-        marker.bindPopup('<div>' + sock.name  + '</div>', {
+        // let popupContents = '<button onClick="">Chat</button></a>';
+        // marker.bindPopup(popupContents, {
+        //   showOnMouseOver: true
+        // });
+        var chatInput = ReactDOMServer.renderToStaticMarkup(React.createElement(ChatInput));
+        marker.bindPopup(chatInput, {
           showOnMouseOver: true
         });
         //add marker to Markers
