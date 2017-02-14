@@ -4,3 +4,4 @@ yarn.lock
 yarn-error.log
 npm-debug.log
 public/app.js
+npm-debug.log*

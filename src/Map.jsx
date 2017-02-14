@@ -86,7 +86,11 @@ class Map extends Component {
         let data = this.state;
         socket.emit('identifyWithLocation', data);
       },
-      (error) => alert('ERROR: ' + JSON.stringify(error)),
+      (error) => {
+        alert('ERROR: ' + JSON.stringify(error));
+        console.log('ERROR!');
+        console.log(error);
+      },
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
     /* END HTML5 Geolocation */
