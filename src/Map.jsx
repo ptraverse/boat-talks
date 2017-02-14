@@ -60,6 +60,7 @@ class Map extends Component {
     function getRandom(min, max) {
       return Math.random() * (max - min) + min;
     }
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         // add skew, for developing socket on a single machine
@@ -87,11 +88,19 @@ class Map extends Component {
         socket.emit('identifyWithLocation', data);
       },
       (error) => {
-        alert('ERROR: ' + JSON.stringify(error));
-        console.log('ERROR!');
+        alert('ERROR: FUCK  YOU GOOGLE' + JSON.stringify(error));
+        console.log('ERROR FUCK YOU GOOGLE!');
         console.log(error);
+        //FUCK YOU GOOGLE
+        this.setState({
+          lat: getRandom(48.427 - 0.5, 48.427 + 0.5),
+          lon: getRandom(-123.38 - 0.25, -123.38 + 0.25)
+        });
+        map.setView(this.getCenterObj(), this.state.zoom);
+        let data = this.state;
+        socket.emit('identifyWithLocation', data);
       },
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 10000}
     );
     /* END HTML5 Geolocation */
 
